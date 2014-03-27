@@ -14,7 +14,8 @@ class Middleman::Extensions::PagesDirectory < Middleman::Extension
     pages.reject! { |path| File.directory? path }
 
     resources + pages.map do |source|
-      page = app.sitemap.extensionless_path source[pages_directory.length..-1]
+      page = app.sitemap.extensionless_path(source[pages_directory.length..-1])
+      page.gsub!('.html', '/index.html')
       Middleman::Sitemap::Resource.new app.sitemap, page, source
     end
   end
