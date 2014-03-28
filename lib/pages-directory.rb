@@ -20,6 +20,12 @@ class Middleman::Extensions::PagesDirectory < Middleman::Extension
     end
   end
 
+  helpers do
+    def is_page?
+      current_page.source_file.include? "/pages/"
+    end
+  end
+
 end
 
 # Register extensions which can be activated
