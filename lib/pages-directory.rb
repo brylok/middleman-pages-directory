@@ -2,8 +2,7 @@
 require 'middleman-core'
 
 # Extension namespace
-class Middleman::Extensions::PagesDirectory < Middleman::Extension
-  register :pages_directory
+class PagesDirectory < Middleman::Extension
   option   :pages_dir, 'pages', 'Directory for site pages'
 
   def manipulate_resource_list(resources)
@@ -14,15 +13,8 @@ class Middleman::Extensions::PagesDirectory < Middleman::Extension
     pages.reject! { |path| File.directory? path }
 
     resources + pages.map do |source|
-      page = app.sitemap.extensionless_path(source[pages_directory.length..-1])
-      page.gsub!('.html', '/index.html')
+      page = app.sitemap.extensionless_path source[pages_directory.length..-1]
       Middleman::Sitemap::Resource.new app.sitemap, page, source
-    end
-  end
-
-  helpers do
-    def is_page?
-      current_page.source_file.include? "/pages/"
     end
   end
 
@@ -32,5 +24,4 @@ end
 # Make sure we have the version of Middleman we expect
 # Name param may be omited, it will default to underscored
 # version of class name
-
-# MyExtension.register(:my_extension))
+::Middleman::Extensions.register(:pages_directory, PagesDirectory);
